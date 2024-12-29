@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #fde7e7;
+        margin: 0;
+        overflow-x: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+    }
+
+    .background-hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+        background:
+            radial-gradient(circle, #ff4d4d 5%, transparent 6%),
+            radial-gradient(circle, #ff4d4d 5%, transparent 6%);
+        background-size: 30px 30px;
+        background-position: 0 0, 15px 15px;
+        animation: heart-rain 10s linear infinite;
+    }
+
+    @keyframes heart-rain {
+        from {
+            transform: translateY(-100%);
+        }
+
+        to {
+            transform: translateY(100%);
+        }
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .envelope-container {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .envelope {
+        width: 100%;
+        height: 400px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    .envelope:hover {
+        transform: rotateY(180deg);
+    }
+
+    .envelope-front,
+    .envelope-back {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .envelope-front {
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ff4d4d;
+    }
+
+    .envelope-front .front-content {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .envelope-back {
+        background-color: #fff;
+        transform: rotateY(180deg);
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+
+    .letter {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .letter-content {
+        text-align: center;
+    }
+
+    .letter-content h1 {
+        color: #ff4d4d;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .sender-info {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .letter-text {
+        margin-bottom: 10px;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .sender-name {
+        font-weight: bold;
+        font-style: italic;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
+    .heart-emojis {
+        font-size: 36px;
+        margin-top: 20px;
+    }
+
+    .heart-emojis span {
+        margin: 0 5px;
+        color: #ff4d4d;
+    }
+
+
+    @media (max-width: 600px) {
+        .container {
+            padding: 20px;
+        }
+
+        .envelope {
+            height: 400px;
+        }
+
+        .envelope-front .front-content {
+            padding: 10px;
+        }
+
+        .letter-content h1 {
+            font-size: 20px;
+        }
+
+        .letter-text {
+            font-size: 14px;
+        }
+
+        .sender-info,
+        .sender-name {
+            font-size: 12px;
+        }
+
+        .heart-emojis {
+            font-size: 24px;
+        }
+    }
+
+    h3 {
+        margin: 10px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="background-hearts"></div>
+        <div class="content">
+            <div class="envelope-container">
+                <div class="envelope" id="envelope">
+                    <div class="envelope-front">
+                        <div class="front-content">
+                            <h3>For My Wife</h3>
+                            <h2>Mihra Jean</h2>
+
+                            <p>Click to reveal my heart...</p>
+                        </div>
+                    </div>
+                    <div class="envelope-back">
+                        <div class="letter" id="letter">
+                            <div class="letter-content">
+                                <h1>To My Wife</h1>
+                                <p class="sender-info">From your Husband<br>December 31, 2024</p>
+                                <p class="letter-text">My Dearest Jean,</p>
+                                <p class="letter-text">Happy New year wifey.....And I want to start it by telling you
+                                    just how much I love you so much that it feels impossible
+                                    to put into words.... You are my everything, and no matter what happens... I’ll
+                                    always be by your side through every
+                                    struggle and challenge..... You’re stuck with me, okay? No refunds, no
+                                    exchanges!..🥰🥰🥰</p>
+                                <p class="letter-text">....I promise I’ll never make you cry (unless it’s from laughing
+                                    too hard at my jokes....🤣🤣🤣), and I’ll always choose
+                                    you, every single day...... Even when your mood swings like a
+                                    rollercoaster🤭🤭🤭..., I’ll hold on tight and keep loving
+                                    you...... You can be as grumpy, dramatic, or even as 'bipolar' as you want, and I’ll
+                                    still think you’re the most amazing
+                                    person in the world......</p>
+                                <p class="letter-text">I’ll work on becoming the best version of myself for
+                                    you.🥰🥰🥰..... one who knows how to take your cute but dramatic
+                                    moods with a smile and always stocks up on your favorite snacks(chichiria) for
+                                    night..🤣🤣🤣. You’re my inspiration, my
+                                    partner, my forever, and the one who makes me laugh at the dumbest things......</p>
+                                <p class="letter-text">Happy New Year, my Wifey! This year is ours......filled with
+                                    love, laughter, and me being clingly annoying you every day
+                                    (because that’s my love language)....🥰🥰🥰</p>
+                                <p class="letter-text">Forever yours,</p>
+                                <p class="sender-name">Jumryl</p>
+                            </div>
+                            <div class="heart-emojis">
+                                <span>&#10084;&#65039;</span><span>&#10084;&#65039;</span><span>&#10084;&#65039;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
