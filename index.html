@@ -26,7 +26,7 @@
         max-width: 800px;
     }
 
-    .background-hearts {
+    /* .background-hearts {
         position: fixed;
         top: 0;
         left: 0;
@@ -37,7 +37,7 @@
         background:
             radial-gradient(circle, #ff4d4d 5%, transparent 6%),
             radial-gradient(circle, #ff4d4d 5%, transparent 6%);
-        background-size: 30px 30px;
+        background-size: 150px 150px;
         background-position: 0 0, 15px 15px;
         animation: heart-rain 10s linear infinite;
     }
@@ -49,6 +49,32 @@
 
         to {
             transform: translateY(100%);
+        }
+    } */
+
+    .background-hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        z-index: -1;
+        pointer-events: none;
+        background:
+            radial-gradient(circle, #ff4d4d 5%, transparent 6%),
+            radial-gradient(circle, #ff4d4d 5%, transparent 6%);
+        background-size: 75px 75px;
+        background-position: 0 0, 37.5px 37.5px;
+        animation: heart-rain 5s linear infinite;
+    }
+
+    @keyframes heart-rain {
+        0% {
+            transform: translateY(-50%);
+        }
+
+        100% {
+            transform: translateY(0%);
         }
     }
 
@@ -200,6 +226,44 @@
     p {
         font-size: 30px;
     }
+
+    .heart-ribbon-gif {
+        width: 100%;
+        height: 150px;
+        position: relative;
+        margin-bottom: 20px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .envelope-front {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .heart-ribbon-gif-back {
+        width: 100px;
+        /* Adjust size */
+        height: 100px;
+        /* Adjust size */
+        position: absolute;
+        top: 0;
+        /* Align to top edge */
+        right: 0;
+        /* Align to right edge */
+        overflow: hidden;
+        z-index: 10;
+        /* Ensure it's above other elements */
+    }
+
+    .envelope-back {
+        position: relative;
+        padding: 20px;
+        box-sizing: border-box;
+    }
 </style>
 
 <body>
@@ -208,15 +272,39 @@
         <div class="content">
             <div class="envelope-container">
                 <div class="envelope" id="envelope">
-                    <div class="envelope-front">
+                    <!-- <div class="envelope-front">
                         <div class="front-content">
                             <h3>For My Wife</h3>
                             <h2>Mihra Jean</h2>
 
                             <p>Click to reveal my heart...</p>
                         </div>
+                    </div> -->
+
+                    <div class="envelope-front">
+                        <!-- Add the GIPHY heart at the top -->
+                        <div class="heart-ribbon-gif">
+                            <iframe src="https://giphy.com/embed/3nvMq28M5NJe4bGr06" width="100%" height="100%"
+                                style="position:absolute; border: none;" frameborder="0" allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="front-content">
+                            <h3>For My Wife</h3>
+                            <h2>Mihra Jean</h2>
+                            <p>Click to reveal my heart...</p>
+                        </div>
                     </div>
+
+
+
+
+
                     <div class="envelope-back">
+                        <div class="heart-ribbon-gif-back">
+                            <iframe src="https://giphy.com/embed/3nvMq28M5NJe4bGr06" width="100%" height="100%"
+                                style="position:absolute; border: none;" frameborder="0" allowfullscreen>
+                            </iframe>
+                        </div>
                         <div class="letter" id="letter">
                             <div class="letter-content">
                                 <h1>To My Wife</h1>
