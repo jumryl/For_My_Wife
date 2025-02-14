@@ -4,344 +4,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Letter</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #fde7e7;
-        margin: 0;
-        overflow-x: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    .container {
-        position: relative;
-        width: 100%;
-        max-width: 800px;
-    }
-
-    /* .background-hearts {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        pointer-events: none;
-        background:
-            radial-gradient(circle, #ff4d4d 5%, transparent 6%),
-            radial-gradient(circle, #ff4d4d 5%, transparent 6%);
-        background-size: 150px 150px;
-        background-position: 0 0, 15px 15px;
-        animation: heart-rain 10s linear infinite;
-    }
-
-    @keyframes heart-rain {
-        from {
-            transform: translateY(-100%);
+    <title>For Jean</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        to {
-            transform: translateY(100%);
-        }
-    } */
-
-    .background-hearts {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 200%;
-        height: 200%;
-        z-index: -1;
-        pointer-events: none;
-        background:
-            radial-gradient(circle, #ff4d4d 5%, transparent 6%),
-            radial-gradient(circle, #ff4d4d 5%, transparent 6%);
-        background-size: 75px 75px;
-        background-position: 0 0, 37.5px 37.5px;
-        animation: heart-rain 5s linear infinite;
-    }
-
-    @keyframes heart-rain {
-        0% {
-            transform: translateY(-50%);
+        body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            font-family: sans-serif;
+            background-color: #60a0cd;
+            overflow: hidden;
+            position: relative;
         }
 
-        100% {
-            transform: translateY(0%);
+        .heart {
+            position: absolute;
+            top: -50px;
+            color: red;
+            font-size: 20px;
+            animation: fall linear infinite;
         }
-    }
 
-    .content {
-        position: relative;
-        z-index: 1;
-    }
+        @keyframes fall {
+            from {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
 
-    .envelope-container {
-        perspective: 1000px;
-        transform-style: preserve-3d;
-        position: relative;
-        width: 100%;
-        max-width: 1000px;
-        margin: 0 auto;
-    }
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
 
-    .envelope {
-        width: 100%;
-        height: 1000px;
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    }
+        .wrapper {
+            height: 150px;
+            width: 225px;
+            background-color: #3760C9;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 0;
+            cursor: pointer;
+        }
 
-    .envelope:hover {
-        transform: rotateY(180deg);
-    }
+        .lid {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            border-right: 112.5px solid transparent;
+            border-bottom: 75px solid transparent;
+            border-left: 112.5px solid transparent;
+            transform-origin: top;
+            transition: transform 0.25s linear;
+        }
 
-    .envelope-front,
-    .envelope-back {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        backface-visibility: hidden;
-        border: 2px solid #ccc;
-        border-radius: 10px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
+        .lid.one {
+            border-top: 75px solid #658ced;
+            transform: rotateX(0deg);
+            z-index: 3;
+            transition-delay: 0.75s;
+        }
 
-    .envelope-front {
-        background-color: #f5f5f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #ff4d4d;
-    }
+        .lid.one._1 {
+            border-top: 75px solid #ef3737;
+            transform: rotateX(0deg);
+            z-index: 3;
+            transition-delay: 0.75s;
+        }
 
-    .envelope-front .front-content {
-        text-align: center;
-        padding: 20px;
-    }
+        .lid.one._2 {
+            border-top: 75px solid #3feb6b;
+            transform: rotateX(0deg);
+            z-index: 3;
+            transition-delay: 0.75s;
+        }
 
-    .envelope-back {
-        background-color: #fff;
-        transform: rotateY(180deg);
-        padding: 20px;
-        box-sizing: border-box;
-        overflow-y: auto;
-    }
-
-    .letter {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .letter-content {
-        text-align: center;
-    }
-
-    .letter-content h1 {
-        color: #ff4d4d;
-        font-size: 40px;
-        margin-bottom: 10px;
-    }
-
-    .sender-info {
-        font-size: 20px;
-        color: #888;
-    }
-
-    .letter-text {
-        margin-bottom: 10px;
-        font-size: 35px;
-        line-height: 1.6;
-    }
-
-    .sender-name {
-        font-weight: bold;
-        font-style: italic;
-        font-size: 18px;
-        margin-top: 10px;
-    }
-
-    .heart-emojis {
-        font-size: 36px;
-        margin-top: 20px;
-    }
-
-    .heart-emojis span {
-        margin: 0 5px;
-        color: #ff4d4d;
-    }
-
-
-    @media (max-width: 600px) {
-        .container {
-            padding: 20px;
+        .lid.two {
+            border-top: 75px solid #3760C9;
+            transform: rotateX(90deg);
+            z-index: 1;
+            transition-delay: 0.5s;
         }
 
         .envelope {
-            height: 1000px;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            border-top: 75px solid transparent;
+            border-right: 112.5px solid #C4DFF0;
+            border-bottom: 75px solid #C4DFF0;
+            border-left: 112.5px solid #a4d4f2;
+            z-index: 3;
         }
 
-        .envelope-front .front-content {
-            padding: 10px;
+        .envelope_1 {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            border-top: 75px solid transparent;
+            border-right: 112.5px solid #C4DFF0;
+            border-bottom: 75px solid #C4DFF0;
+            border-left: 112.5px solid #f3b0b0;
+            z-index: 3;
         }
 
-        .letter-content h1 {
-            font-size: 20px;
+        .envelope_2 {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            border-top: 75px solid transparent;
+            border-right: 112.5px solid #C4DFF0;
+            border-bottom: 75px solid #C4DFF0;
+            border-left: 112.5px solid #cbefcc;
+            z-index: 3;
         }
 
-        .letter-text {
-            font-size: 14px;
+        .envelope-text {
+            position: absolute;
+            bottom: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: bold;
+            color: #353ad3ad;
+            text-align: center;
+            z-index: 4;
         }
 
-        .sender-info,
-        .sender-name {
-            font-size: 12px;
+        .letter {
+            position: absolute;
+            top: 0;
+            width: 80%;
+            height: 80%;
+            background-color: white;
+            border-radius: 5px;
+            z-index: 2;
+            transition: 0.5s;
+            text-align: center;
+            line-height: 35px;
+            font-size: 18px;
+            color: #3B4049;
+            font-family: 'Valentine', sans-serif;
         }
 
-        .heart-emojis {
-            font-size: 24px;
+        .wrapper:hover .lid.one {
+            transform: rotateX(90deg);
+            transition-delay: 0s;
         }
-    }
 
-    h3 {
-        margin: 10px;
-        font-size: 40px;
-    }
+        .wrapper:hover .lid.two {
+            transform: rotateX(180deg);
+            transition-delay: 0.25s;
+        }
 
-    h2 {
-        margin: 10px;
-        font-size: 50px;
-    }
+        .wrapper:hover .letter {
+            transform: translateY(-40px);
+            transition-delay: 0.5s;
+        }
 
-    p {
-        font-size: 30px;
-    }
+        h3 {
+            font-size: 50px;
+            font-family: 'Valentine', sans-serif;
+        }
 
-    .heart-ribbon-gif {
-        width: 100%;
-        height: 150px;
-        position: relative;
-        margin-bottom: 20px;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+        h1 {
+            font-size: 30px;
+            margin-top: -70px;
+            font-family: 'Valentine', sans-serif;
+        }
 
-    .envelope-front {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .heart-ribbon-gif-back {
-        width: 100px;
-        /* Adjust size */
-        height: 100px;
-        /* Adjust size */
-        position: absolute;
-        top: 0;
-        /* Align to top edge */
-        right: 0;
-        /* Align to right edge */
-        overflow: hidden;
-        z-index: 10;
-        /* Ensure it's above other elements */
-    }
-
-    .envelope-back {
-        position: relative;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-</style>
+        @font-face {
+            font-family: 'Valentine';
+            src: url('./ValentinesDay2025/font/Valentine.ttf') format('truetype');
+        }
+    </style>
+</head>
 
 <body>
-    <div class="container">
-        <div class="background-hearts"></div>
-        <div class="content">
-            <div class="envelope-container">
-                <div class="envelope" id="envelope">
-                    <!-- <div class="envelope-front">
-                        <div class="front-content">
-                            <h3>For My Wife</h3>
-                            <h2>Mihra Jean</h2>
+    <script>
+        function createHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
 
-                            <p>Click to reveal my heart...</p>
-                        </div>
-                    </div> -->
+        document.addEventListener("DOMContentLoaded", () => {
+            createHearts();
+            document.querySelectorAll(".letter").forEach(letter => {
+                letter.addEventListener("click", function () {
+                    if (this.innerText.includes("1st Monthsary")) {
+                        window.location.href = "./ValentinesDay2025/Monthsary/FirstMonthsary.html";
+                    } else if (this.innerText.includes("Valentines Day")) {
+                        window.location.href = "./ValentinesDay2025/Valentines/ValentinesMessage2025.html";
+                    } else if (this.innerText.includes("Soon...")) {
+                        window.location.href = "Soon.html";
+                    }
 
-                    <div class="envelope-front">
-                        <!-- Add the GIPHY heart at the top -->
-                        <div class="heart-ribbon-gif">
-                            <iframe src="https://giphy.com/embed/3nvMq28M5NJe4bGr06" width="100%" height="100%"
-                                style="position:absolute; border: none;" frameborder="0" allowfullscreen>
-                            </iframe>
-                        </div>
-                        <div class="front-content">
-                            <h3>For My Wife</h3>
-                            <h2>Mihra Jean</h2>
-                            <p>Click to reveal my heart...</p>
-                        </div>
-                    </div>
+                });
+            });
+        });
+    </script>
 
-
-
-
-
-                    <div class="envelope-back">
-                        <div class="heart-ribbon-gif-back">
-                            <iframe src="https://giphy.com/embed/3nvMq28M5NJe4bGr06" width="100%" height="100%"
-                                style="position:absolute; border: none;" frameborder="0" allowfullscreen>
-                            </iframe>
-                        </div>
-                        <div class="letter" id="letter">
-                            <div class="letter-content">
-                                <h1>To My Wife</h1>
-                                <p class="sender-info">From your Husband<br>December 31, 2024</p>
-                                <p class="letter-text">My Dearest Jean,</p>
-                                <p class="letter-text">Happy New year wifey.....And I want to start it by telling you
-                                    just how much I love you so much that it feels impossible
-                                    to put into words.... You are my everything, and no matter what happens... I’ll
-                                    always be by your side through every
-                                    struggle and challenge..... You’re stuck with me, okay? No refunds, no
-                                    exchanges!..🥰🥰🥰</p>
-                                <p class="letter-text">....I promise I’ll never make you cry (unless it’s from laughing
-                                    too hard at my jokes....🤣🤣🤣), and I’ll always choose
-                                    you, every single day...... Even when your mood swings like a
-                                    rollercoaster🤭🤭🤭..., I’ll hold on tight and keep loving
-                                    you...... You can be as grumpy, dramatic, or even as 'bipolar' as you want, and I’ll
-                                    still think you’re the most amazing
-                                    person in the world......</p>
-                                <p class="letter-text">I’ll work on becoming the best version of myself for
-                                    you.🥰🥰🥰..... one who knows how to take your cute but dramatic
-                                    moods with a smile and always stocks up on your favorite snacks(chichiria) for
-                                    night..🤣🤣🤣. You’re my inspiration, my
-                                    partner, my forever, and the one who makes me laugh at the dumbest things......</p>
-                                <p class="letter-text">Happy New Year, my Wifey! This year is ours......filled with
-                                    love, laughter, and me being clingly annoying you every day
-                                    (because that’s my love language)....🥰🥰🥰</p>
-                                <p class="letter-text">Forever yours,</p>
-                                <p class="sender-name">Jumryl</p>
-                            </div>
-                            <div class="heart-emojis">
-                                <span>&#10084;&#65039;</span><span>&#10084;&#65039;</span><span>&#10084;&#65039;</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <h3>For My Wife</h3><br>
+    <h1>Mihra Jean</h1>
+    <div class="wrapper">
+        <div class="lid one"></div>
+        <div class="lid two"></div>
+        <div class="envelope">
+            <div class="envelope-text">December 31, 2024</div>
         </div>
+        <div class="letter">Click to Open<br>💖 1st Monthsary 💖</div>
+    </div>
+    <div class="wrapper">
+        <div class="lid one _1"></div>
+        <div class="lid two"></div>
+        <div class="envelope_1">
+            <div class="envelope-text">Febuary 14, 2025</div>
+        </div>
+        <div class="letter">Click to Open<br>🌹 Valentines Day 🌹</div>
+    </div>
+    <div class="wrapper">
+        <div class="lid one _2"></div>
+        <div class="lid two"></div>
+        <div class="envelope_2">
+            <div class="envelope-text">Soon...</div>
+        </div>
+        <div class="letter">Click to Open<br>😎 Soon... 😎</div>
     </div>
 </body>
 
