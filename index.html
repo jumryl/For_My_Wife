@@ -14,7 +14,7 @@
 
         body {
             height: 80vh;
-            width: 95%;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
@@ -46,8 +46,8 @@
         }
 
         .wrapper {
-            height: 150px;
-            width: 550px;
+            height: 200px;
+            width: 700px;
             background-color: #3760C9;
             position: relative;
             display: flex;
@@ -55,6 +55,7 @@
             align-items: center;
             z-index: 0;
             cursor: pointer;
+            margin-top: 220px;
         }
 
         .lid {
@@ -63,36 +64,50 @@
             width: 40%;
             top: 0;
             left: 0;
-            border-right: 280.5px solid transparent;
-            border-bottom: 76px solid transparent;
-            border-left: 270.5px solid transparent;
+            border-right: 350.5px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-left: 350.5px solid transparent;
             transform-origin: top;
             transition: transform 0.25s linear;
         }
 
         .lid.one {
-            border-top: 145px solid #658ced;
+            border-top: 200px solid #658ced;
             transform: rotateX(0deg);
             z-index: 3;
             transition-delay: 0.75s;
         }
 
         .lid.one._1 {
-            border-top: 145px solid #ef3737;
+            border-top: 200px solid #ef3737;
             transform: rotateX(0deg);
             z-index: 3;
             transition-delay: 0.75s;
         }
 
         .lid.one._2 {
-            border-top: 145px solid #3feb6b;
+            border-top: 200px solid #3feb6b;
             transform: rotateX(0deg);
             z-index: 3;
             transition-delay: 0.75s;
         }
 
         .lid.two {
-            border-top: 135px solid #3760C9;
+            border-top: 200px solid #3760C9;
+            transform: rotateX(90deg);
+            z-index: 1;
+            transition-delay: 0.5s;
+        }
+
+        .lid.two._1 {
+            border-top: 200px solid #ef3737;
+            transform: rotateX(90deg);
+            z-index: 1;
+            transition-delay: 0.5s;
+        }
+
+        .lid.two._2 {
+            border-top: 200px solid #3feb6b;
             transform: rotateX(90deg);
             z-index: 1;
             transition-delay: 0.5s;
@@ -104,10 +119,10 @@
             width: 100%;
             top: 0;
             left: 0;
-            border-top: 120px solid transparent;
-            border-right: 274.5px solid #C4DFF0;
-            border-bottom: 145px solid #C4DFF0;
-            border-left: 274.5px solid #a4d4f2;
+            border-top: 200px solid transparent;
+            border-right: 350.5px solid #C4DFF0;
+            border-bottom: 200px solid #C4DFF0;
+            border-left: 350.5px solid #a4d4f2;
             /* border-top: 75px solid transparent;
             border-right: 112.5px solid #C4DFF0;
             border-bottom: 75px solid #C4DFF0;
@@ -121,10 +136,10 @@
             width: 100%;
             top: 0;
             left: 0;
-            border-top: 120px solid transparent;
-            border-right: 274.5px solid #C4DFF0;
-            border-bottom: 145px solid #C4DFF0;
-            border-left: 274.5px solid #f3b0b0;
+            border-top: 200px solid transparent;
+            border-right: 350.5px solid #C4DFF0;
+            border-bottom: 200px solid #C4DFF0;
+            border-left: 350.5px solid #f3b0b0;
             z-index: 3;
         }
 
@@ -134,19 +149,19 @@
             width: 100%;
             top: 0;
             left: 0;
-            border-top: 120px solid transparent;
-            border-right: 274.5px solid #C4DFF0;
-            border-bottom: 145px solid #C4DFF0;
-            border-left: 274.5px solid #cbefcc;
+            border-top: 200px solid transparent;
+            border-right: 350.5px solid #C4DFF0;
+            border-bottom: 200px solid #C4DFF0;
+            border-left: 350.5px solid #cbefcc;
             z-index: 3;
         }
 
         .envelope-text {
             position: absolute;
-            bottom: -115px;
+            bottom: -150px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 25px;
+            font-size: 30px;
             font-weight: bold;
             color: #353ad3ad;
             text-align: center;
@@ -156,15 +171,15 @@
         .letter {
             position: absolute;
             top: 0;
-            width: 80%;
-            height: 120%;
+            width: 90%;
+            height: 170%;
             background-color: white;
             border-radius: 10px;
             z-index: 2;
             transition: 0.5s;
             text-align: center;
-            line-height: 65px;
-            font-size: 40px;
+            line-height: 100px;
+            font-size: 60px;
             color: #3B4049;
             font-family: 'Valentine', sans-serif;
         }
@@ -180,19 +195,19 @@
         }
 
         .wrapper:hover .letter {
-            transform: translateY(-40px);
+            transform: translateY(-110px);
             transition-delay: 0.5s;
         }
 
         h3 {
-            margin-top: -110px;
+            margin-top: 80px;
             font-size: 120px;
             font-family: 'Valentine', sans-serif;
         }
 
         h1 {
             font-size: 110px;
-            margin-top: -440px;
+            margin-top: -120px;
             font-family: 'Valentine', sans-serif;
         }
 
@@ -246,7 +261,7 @@
     </div>
     <div class="wrapper">
         <div class="lid one _1"></div>
-        <div class="lid two"></div>
+        <div class="lid two _1"></div>
         <div class="envelope_1">
             <div class="envelope-text">Febuary 14, 2025</div>
         </div>
@@ -254,7 +269,7 @@
     </div>
     <div class="wrapper">
         <div class="lid one _2"></div>
-        <div class="lid two"></div>
+        <div class="lid two _2"></div>
         <div class="envelope_2">
             <div class="envelope-text">Soon...</div>
         </div>
