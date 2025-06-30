@@ -1,282 +1,276 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>For Jean</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            height: 80vh;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-family: sans-serif;
-            background-color: #60a0cd;
-            overflow: hidden;
-            position: relative;
-            align-content: stretch;
-            flex-direction: column;
-            flex-wrap: nowrap;
-        }
-
-        .heart {
-            position: absolute;
-            top: -50px;
-            color: red;
-            font-size: 45px;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            from {
-                transform: translateY(-100px);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
-
-        .wrapper {
-            height: 200px;
-            width: 700px;
-            background-color: #3760C9;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 0;
-            cursor: pointer;
-            margin-top: 220px;
-        }
-
-        .lid {
-            position: absolute;
-            height: 100%;
-            width: 40%;
-            top: 0;
-            left: 0;
-            border-right: 350.5px solid transparent;
-            border-bottom: 100px solid transparent;
-            border-left: 350.5px solid transparent;
-            transform-origin: top;
-            transition: transform 0.25s linear;
-        }
-
-        .lid.one {
-            border-top: 200px solid #658ced;
-            transform: rotateX(0deg);
-            z-index: 3;
-            transition-delay: 0.75s;
-        }
-
-        .lid.one._1 {
-            border-top: 200px solid #ef3737;
-            transform: rotateX(0deg);
-            z-index: 3;
-            transition-delay: 0.75s;
-        }
-
-        .lid.one._2 {
-            border-top: 200px solid #3feb6b;
-            transform: rotateX(0deg);
-            z-index: 3;
-            transition-delay: 0.75s;
-        }
-
-        .lid.two {
-            border-top: 200px solid #3760C9;
-            transform: rotateX(90deg);
-            z-index: 1;
-            transition-delay: 0.5s;
-        }
-
-        .lid.two._1 {
-            border-top: 200px solid #ef3737;
-            transform: rotateX(90deg);
-            z-index: 1;
-            transition-delay: 0.5s;
-        }
-
-        .lid.two._2 {
-            border-top: 200px solid #3feb6b;
-            transform: rotateX(90deg);
-            z-index: 1;
-            transition-delay: 0.5s;
-        }
-
-        .envelope {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            border-top: 200px solid transparent;
-            border-right: 350.5px solid #C4DFF0;
-            border-bottom: 200px solid #C4DFF0;
-            border-left: 350.5px solid #a4d4f2;
-            /* border-top: 75px solid transparent;
-            border-right: 112.5px solid #C4DFF0;
-            border-bottom: 75px solid #C4DFF0;
-            border-left: 112.5px solid #a4d4f2; */
-            z-index: 3;
-        }
-
-        .envelope_1 {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            border-top: 200px solid transparent;
-            border-right: 350.5px solid #C4DFF0;
-            border-bottom: 200px solid #C4DFF0;
-            border-left: 350.5px solid #f3b0b0;
-            z-index: 3;
-        }
-
-        .envelope_2 {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            border-top: 200px solid transparent;
-            border-right: 350.5px solid #C4DFF0;
-            border-bottom: 200px solid #C4DFF0;
-            border-left: 350.5px solid #cbefcc;
-            z-index: 3;
-        }
-
-        .envelope-text {
-            position: absolute;
-            bottom: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-            font-weight: bold;
-            color: #353ad3ad;
-            text-align: center;
-            z-index: 4;
-        }
-
-        .letter {
-            position: absolute;
-            top: 0;
-            width: 90%;
-            height: 170%;
-            background-color: white;
-            border-radius: 10px;
-            z-index: 2;
-            transition: 0.5s;
-            text-align: center;
-            line-height: 100px;
-            font-size: 60px;
-            color: #3B4049;
-            font-family: 'Valentine', sans-serif;
-        }
-
-        .wrapper:hover .lid.one {
-            transform: rotateX(90deg);
-            transition-delay: 0s;
-        }
-
-        .wrapper:hover .lid.two {
-            transform: rotateX(180deg);
-            transition-delay: 0.25s;
-        }
-
-        .wrapper:hover .letter {
-            transform: translateY(-110px);
-            transition-delay: 0.5s;
-        }
-
-        h3 {
-            margin-top: 80px;
-            font-size: 120px;
-            font-family: 'Valentine', sans-serif;
-        }
-
-        h1 {
-            font-size: 110px;
-            margin-top: -10px;
-            font-family: 'Valentine', sans-serif;
-        }
-
-        @font-face {
-            font-family: 'Valentine';
-            src: url('./ValentinesDay2025/font/Valentine.ttf') format('truetype');
-        }
-    </style>
+	<title>For Jean Exclusively</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="./assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="./assets/css/noscript.css" />
+	</noscript>
 </head>
 
-<body>
-    <script>
-        function createHearts() {
-            setInterval(() => {
-                let heart = document.createElement("div");
-                heart.classList.add("heart");
-                heart.innerHTML = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 300);
-        }
+<body class="is-preload">
 
-        document.addEventListener("DOMContentLoaded", () => {
-            createHearts();
-            document.querySelectorAll(".letter").forEach(letter => {
-                letter.addEventListener("click", function () {
-                    if (this.innerText.includes("1st Monthsary")) {
-                        window.location.href = "./ValentinesDay2025/Monthsary/FirstMonthsary.html";
-                    } else if (this.innerText.includes("Valentines Day")) {
-                        window.location.href = "./ValentinesDay2025/Valentines/ValentinesMessage2025.html";
-                    } else if (this.innerText.includes("Soon...")) {
-                        window.location.href = "Soon.html";
-                    }
+	<!-- Wrapper -->
+	<div id="wrapper" class="fade-in">
 
-                });
-            });
-        });
-    </script>
+		<!-- Intro -->
+		<div id="intro">
+			<h1>Moments<br />
+				with You</h1>
+			<p>Each photo holds a piece of our love story memories that bring back smiles,
+				laughter, and the warmth of every moment shared with you.</p>
+			<ul class="actions">
+				<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+			</ul>
+		</div>
 
-    <h3>For My Wife</h3><br>
-    <h1>Mihra Jean</h1>
-    <div class="wrapper">
-        <div class="lid one"></div>
-        <div class="lid two"></div>
-        <div class="envelope">
-            <div class="envelope-text">December 31, 2024</div>
-        </div>
-        <div class="letter">Click to Open<br>💖 1st Monthsary 💖</div>
-    </div>
-    <div class="wrapper">
-        <div class="lid one _1"></div>
-        <div class="lid two _1"></div>
-        <div class="envelope_1">
-            <div class="envelope-text">Febuary 14, 2025</div>
-        </div>
-        <div class="letter">Click to Open<br>🌹 Valentines Day 🌹</div>
-    </div>
-    <div class="wrapper">
-        <div class="lid one _2"></div>
-        <div class="lid two _2"></div>
-        <div class="envelope_2">
-            <div class="envelope-text">Soon...</div>
-        </div>
-        <div class="letter">Click to Open<br>😎 Soon... 😎</div>
-    </div>
+		<!-- Header -->
+		<header id="header">
+			<a href="./index.html" class="logo">Moments</a>
+		</header>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul class="links">
+				<li class="active"><a href="./index.html">Moments With You</a></li>
+				<li><a href="./generic.html">Where it Begins</a></li>
+				<li><a href="./elements.html">Summary of US</a></li>
+			</ul>
+			<ul class="icons">
+				<li><a href="https://www.facebook.com/muj.85256" class="icon brands fa-facebook-f"><span
+							class="label">Facebook</span></a></li>
+				<li><a href="https://www.instagram.com/jumryl?igsh=MXh1NTZsZjc0bGh1OQ=="
+						class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="https://github.com/jumryl" class="icon brands fa-github"><span
+							class="label">GitHub</span></a></li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Featured Post -->
+			<article class="post featured">
+				<header class="major">
+					<span class="date">December 30, 2024</span>
+					<h2><a>And this is the<br />
+							beginning</a></h2>
+					<p>We met in the most unexpected way, no plans, no signs, just fate quietly working its magic. What
+						started as a simple moment turned into something extraordinary. That unexpected encounter became
+						the beginning of a beautiful journey, one that led me to you, the love I never saw coming but
+						now can't imagine life without.</p>
+				</header>
+				<a class="image main"><img src="./images/image1.jpg" alt="" /></a>
+				<ul class="actions special">
+					<li><a href="./pages/december30.html" class="button large">Full Story</a></li>
+				</ul>
+			</article>
+
+			<!-- Posts -->
+			<section class="posts">
+				<article>
+					<header>
+						<span class="date">January 30, 2025</span>
+						<h2><a>Our First<br />
+								Month of sweetness</a></h2>
+					</header>
+					<a class="image fit"><img src="./images/image11.jpg" alt="" /></a>
+					<p>We celebrated our first monthsary wrapped in sweetness and joy, cherishing every moment like it
+						was magic. Laughter, smiles, and love filled the day, proof that even in just one month, we've
+						created something truly special. Here's to many more beautiful moments together.</p>
+					<ul class="actions special">
+						<li><a href="./pages/january30.html" class="button">Full Story</a></li>
+					</ul>
+				</article>
+				<article>
+					<header>
+						<span class="date">Febuary 16, 2025</span>
+						<h2><a>A Day of<br />
+								Heart's</a></h2>
+					</header>
+					<a class="image fit"><img src="./images/image2.jpg" alt="" /></a>
+					<p>We celebrated Valentine’s Day a day late, but it couldn’t have been more perfect. Under the quiet
+						night sky, we shared laughter, dreams, and soft whispers beneath the stars. As we held hands and
+						looked up, it wasn’t just about the day, it was about us, and the beautiful future we started to
+						dream together that night.</p>
+					<ul class="actions special">
+						<li><a href="./pages/febuary16.html" class="button">Full Story</a></li>
+					</ul>
+				</article>
+				<article>
+					<header>
+						<span class="date">Febuary 28, 2025</span>
+						<h2><a>My Favorite<br />
+								Flower's</a></h2>
+					</header>
+					<a class="image fit"><img src="./images/image3.jpg" alt="" /></a>
+					<p>For our first monthsary, I wanted to give you something as bright and beautiful as the love we’ve
+						started to grow. I chose a bouquet with sunflowers, symbols of warmth, loyalty, and
+						happiness and
+						tulips, which speak of deep love and a promise of forever. Just like our journey, this bouquet
+						holds meaning beyond words: a reminder that even in a short time, you’ve already become someone
+						truly special to me.</p>
+					<ul class="actions special">
+						<li><a href="./pages/febuary28.html" class="button">Full Story</a></li>
+					</ul>
+				</article>
+				<article>
+					<header>
+						<span class="date">March 31, 2025</span>
+						<h2><a>Simple<br />
+								but unique</a></h2>
+					</header>
+					<a class="image fit"><img src="./images/image4.jpg" alt="" /></a>
+					<p>A gift, not something expensive, but something far more valuable. She made it with her
+						own hands, simple yet uniquely hers. Every detail showed the care, thought, and love she poured
+						into it. It wasn’t just a gift, it was a piece of her heart, and receiving it reminded me how
+						lucky I am to be loved by someone so genuine and thoughtful.</p>
+					<ul class="actions special">
+						<li><a href="./pages/march31.html" class="button">Full Story</a></li>
+					</ul>
+				</article>
+				<article>
+					<header>
+						<span class="date">April 30, 2025</span>
+						<h2><a>Too far<br />
+								yet too close</a></h2>
+					</header>
+					<a class="image fit"><img src="./images/image5.jpg" alt="" /></a>
+					<p>Even with the distance between us, our hearts never drifted apart. It was our first real trial, a
+						test of patience, trust, and love. But instead of breaking us, it brought us closer, reminding
+						us how deeply we care for each other. Through every missed hug and late-night call, we proved
+						that love isn’t measured by miles, but by the strength of the bond we share.</p>
+					<ul class="actions special">
+						<li><a href="./pages/april30.html" class="button">Full Story</a></li>
+					</ul>
+				</article>
+				<article>
+					<header>
+						<span class="date">May 30, 2025</span>
+						<h2><a>Bantayan<br />
+								Escapade</a></h2>
+					</header>
+					<a class="image fit"><img src="./images/image6.jpg" alt="" /></a>
+					<p>We spent our monthsary in the paradise of Bantayan Island, just the two of us, away from the
+						noise
+						of the world. Surrounded by crystal-clear waters and white sandy beaches, we explored its beauty
+						hand in hand, creating memories with every step. From quiet walks by the shore to laughter under
+						the sun, it was more than just a vacation, it was a celebration of our love in one of the most
+						beautiful places we've ever been.</p>
+					<ul class="actions special">
+						<li><a href="./pages/may30.html" class="button">Full Story</a></li>
+					</ul>
+				</article>
+				<!-- <article>
+					<header>
+						<span class="date">April 7, 2017</span>
+						<h2><a href="#">Augue lorem<br />
+								primis vestibulum</a></h2>
+					</header>
+					<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+					<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque
+						venenatis dolor imperdiet dolor mattis sagittis magna etiam.</p>
+					<ul class="actions special">
+						<li><a href="#" class="button">Full Story</a></li>
+					</ul>
+				</article> -->
+			</section>
+
+			<!-- Footer -->
+			<footer>
+				<div class="pagination">
+					<!-- <a href="#" class="previous">Prev</a>
+					<a href="#" class="page active">1</a>
+					<a href="#" class="page">2</a>
+					<a href="#" class="page">3</a>
+					<span class="extra">&hellip;</span>
+					<a href="#" class="page">8</a>
+					<a href="#" class="page">9</a>
+					<a href="#" class="page">10</a>
+					<a href="#" class="next">Next</a> -->
+				</div>
+			</footer>
+
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<!-- <section>
+				<form method="post" action="#">
+					<div class="fields">
+						<div class="field">
+							<label for="name">Name</label>
+							<input type="text" name="name" id="name" />
+						</div>
+						<div class="field">
+							<label for="email">Email</label>
+							<input type="text" name="email" id="email" />
+						</div>
+						<div class="field">
+							<label for="message">Message</label>
+							<textarea name="message" id="message" rows="3"></textarea>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><input type="submit" value="Send Message" /></li>
+					</ul>
+				</form>
+			</section>
+			<section class="split contact">
+				<section class="alt">
+					<h3>Address</h3>
+					<p>1234 Somewhere Road #87257<br />
+						Nashville, TN 00000-0000</p>
+				</section>
+				<section>
+					<h3>Phone</h3>
+					<p><a href="#">(000) 000-0000</a></p>
+				</section>
+				<section>
+					<h3>Email</h3>
+					<p><a href="#">info@untitled.tld</a></p>
+				</section>
+				<section>
+					<h3>Social</h3>
+					<ul class="icons alt">
+						<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a>
+						</li>
+						<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a>
+						</li>
+						<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+					</ul>
+				</section>
+			</section> -->
+		</footer>
+
+		<!-- Copyright -->
+		<div id="copyright">
+			<ul>
+				<li>&copy; Jumryl@2025</li>
+				<li>Created By: <a href="https://www.facebook.com/muj.85256">Jumryl Solivio</a></li>
+			</ul>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
 </body>
 
 </html>
