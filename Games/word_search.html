@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Word Search – Responsive & Touch‑friendly</title>
+
+  <link href="./bootstrap-5.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --cell-size: clamp(30px, 7.5vw, 50px);
+      --cell-gap: clamp(3px, 1vw, 6px);
+      --font-size: clamp(.8rem, 2.4vw, 1rem);
+    }
+
+    body {
+      background: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, var(--cell-size));
+      gap: var(--cell-gap);
+      justify-content: center;
+      margin-top: 1.5rem;
+
+      touch-action: none;
+    }
+
+    .cell {
+      width: var(--cell-size);
+      aspect-ratio: 1/1;
+      border: 2px solid #6c757d;
+      border-radius: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: var(--font-size);
+      background: #fff;
+      user-select: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .cell.drag {
+      background: #0d6efd;
+      color: #fff
+    }
+
+    .cell.found {
+      background: #198754;
+      color: #fff !important
+    }
+
+    /* Blinking highlight for hint */
+    @keyframes blink {
+
+      0%,
+      100% {
+        background-color: #e6f9d6;
+      }
+
+      50% {
+        background-color: #cfeeb1;
+      }
+    }
+
+    .cell.highlight {
+      animation: blink 1s infinite;
+      color: #000 !important;
+    }
+
+    .word.badge {
+      font-size: clamp(.75rem, 2.3vw, .95rem)
+    }
+
+    .word.found {
+      text-decoration: line-through !important;
+      color: #198754 !important
+    }
+
+    h2 {
+      font-size: clamp(1.3rem, 6vw, 1.75rem)
+    }
+
+    /* Help button styles */
+    #helpButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background-color: #198754;
+      color: white;
+      font-weight: bold;
+      font-size: 28px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      z-index: 1000;
+      transition: background-color 0.3s ease;
+    }
+
+    #helpButton:hover {
+      background-color: #145c32;
+    }
+
+    /* Sticky Back Button Styles */
+    .back-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #333;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+    }
+
+    .back-btn:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <a href="./gamesMenu.html" class="back-btn" aria-label="Go back">&#8592;</a>
+
+  <div class="container text-center py-4">
+    <h2 class="mb-3">🧩 Word Search <br /> Find me please 💖</h2>
+
+    <div id="grid" class="grid"></div>
+
+    <div class="word-list mt-4">
+      <h5>Words to Find:</h5>
+      <div id="wordList" class="d-flex justify-content-center flex-wrap gap-2 mt-2"></div>
+    </div>
+  </div>
+
+  <!-- Hint button -->
+  <button id="helpButton" title="Highlight a random unfound word">?</button>
+
+  <div class="modal fade" id="winModal" tabindex="-1" aria-labelledby="winModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="winModalLabel">Congratulations!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          You found the missing piece of my heart. 💕 <br />
+          Here is my gift for you:
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#letterModal"
+            data-bs-dismiss="modal">
+            Open Letter
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Letter Modal -->
+  <div class="modal fade" id="letterModal" tabindex="-1" aria-labelledby="letterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="letterModalLabel">A Little Note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center" id="modalBody">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS (includes Popper) -->
+  <script src="./bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* ---------- DATA ---------- */
+    const WORDS = ['JUMRYL', 'JEAN', 'MIHRA', 'SOLIVIO', 'LAO', 'LOVE', 'INFINITY'];
+    const SIZE = 10,
+      DIRS = [
+        [0, 1],
+        [1, 0],
+        [1, 1],
+        [-1, 1],
+        [0, -1],
+        [-1, 0],
+        [-1, -1],
+        [1, -1]
+      ];
+    const grid = [...Array(SIZE)].map(() => Array(SIZE).fill(''));
+    const rand = n => Math.floor(Math.random() * n);
+
+    /* ---------- NOTES ---------- */
+    var words = [
+      'Every moment with you turns ordinary life into an extraordinary adventure.',
+      'Your smile brightens even the darkest days.',
+      'With you, every day feels like a beautiful surprise.',
+      'You are my favorite reason to believe in magic.',
+      'Just knowing you’re near makes everything better.',
+      'Your kindness inspires me to be a better person.',
+      'Loving you is the easiest thing I’ve ever done.',
+      'Together, we can conquer anything life throws at us.',
+      'You make my heart feel at home.',
+      'Your laughter is my favorite sound in the world.',
+      'I’m grateful for every moment we share.',
+      'You’re the calm in my chaos.',
+      'Every day with you is a page in our beautiful story.',
+      'Your love gives me strength I never knew I had.',
+      'You are the spark that lights up my soul.',
+      'Being with you feels like the perfect dream.',
+      'You make the ordinary moments extraordinary.',
+      'You make the ordinary moments extraordinary.',
+      'I see my future in your eyes.',
+      'Loving you is my greatest adventure.',
+    ];
+
+    function getRandomWord() {
+      return words[Math.floor(Math.random() * words.length)];
+    }
+    var letterModal = document.getElementById('letterModal');
+
+    letterModal.addEventListener('show.bs.modal', function () {
+      var modalBody = document.getElementById('modalBody');
+      modalBody.textContent = getRandomWord();
+    });
+
+    /* place words */
+    WORDS.forEach(w => {
+      while (true) {
+        const [dr, dc] = DIRS[rand(DIRS.length)];
+        const r0 = rand(SIZE),
+          c0 = rand(SIZE);
+        const rE = r0 + dr * (w.length - 1),
+          cE = c0 + dc * (w.length - 1);
+        if (rE < 0 || rE >= SIZE || cE < 0 || cE >= SIZE) continue;
+        if ([...w].some((ch, i) => {
+          const r = r0 + dr * i,
+            c = c0 + dc * i;
+          return grid[r][c] && grid[r][c] !== ch;
+        })) continue;
+        [...w].forEach((ch, i) => grid[r0 + dr * i][c0 + dc * i] = ch);
+        break;
+      }
+    });
+    const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let r = 0; r < SIZE; r++)
+      for (let c = 0; c < SIZE; c++)
+        if (!grid[r][c]) grid[r][c] = ALPHA[rand(ALPHA.length)];
+
+    /* ---------- RENDER ---------- */
+    const gEl = document.getElementById('grid');
+    const wEl = document.getElementById('wordList');
+
+    function cellDiv(r, c, chr) {
+      const d = document.createElement('div');
+      d.className = 'cell';
+      d.textContent = chr;
+      d.dataset.r = r;
+      d.dataset.c = c;
+      return d;
+    }
+
+    function render() {
+      gEl.innerHTML = '';
+      wEl.innerHTML = '';
+      grid.forEach((row, r) => row.forEach((ch, c) => gEl.appendChild(cellDiv(r, c, ch))));
+      WORDS.forEach(w => {
+        wEl.insertAdjacentHTML(
+          'beforeend',
+          `<span id="w-${w}" class="word badge bg-secondary text-light p-2">${w}</span>`
+        );
+      });
+    }
+    render();
+
+    /* ----------  DRAG ENGINE (touch‑friendly) ---------- */
+    let start = null,
+      path = [],
+      found = new Set();
+
+    function cellFromEl(el) {
+      return {
+        el,
+        row: +el.dataset.r,
+        col: +el.dataset.c,
+        chr: el.textContent
+      };
+    }
+
+    gEl.addEventListener('pointerdown', e => {
+      const cell = e.target.closest('.cell');
+      if (!cell) return;
+      start = cellFromEl(cell);
+      path = [start];
+      cell.classList.add('drag');
+      e.target.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+
+    function pointerMoveHandler(e) {
+      if (!start) return;
+      e.preventDefault();
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (!el?.classList.contains('cell'))
+        return;
+      buildPath(cellFromEl(el));
+    }
+    gEl.addEventListener('pointermove', pointerMoveHandler); /* works for mouse + touch */
+    window.addEventListener('pointermove', pointerMoveHandler); /* if finger leaves grid */
+
+    window.addEventListener('pointerup', () => {
+      if (!start)
+        return;
+      validate();
+      clearDrag();
+    });
+
+    /* ---------- helpers ---------- */
+    function clearDrag() {
+      path.forEach(c => c.el.classList.remove('drag'));
+      path = [];
+      start = null;
+    }
+
+    function buildPath(curr) {
+      const {
+        row: r0,
+        col: c0
+      } = start, {
+        row: r1,
+        col: c1
+      } = curr;
+      const dr = Math.sign(r1 - r0),
+        dc = Math.sign(c1 - c0);
+      if (!dr && !dc)
+        return;
+      if (dr && dc && Math.abs(r1 - r0) !== Math.abs(c1 - c0))
+        return;
+
+      path.forEach(c => c.el.classList.remove('drag'));
+      path = [];
+      let r = r0,
+        c = c0;
+      while (true) {
+        const el = document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+        path.push({
+          el,
+          row: r,
+          col: c,
+          chr: el.textContent
+        });
+        if (r === r1 && c === c1)
+          break;
+        r += dr;
+        c += dc;
+      }
+      path.forEach(c => c.el.classList.add('drag'));
+    }
+
+    function validate() {
+      if (path.length < 2)
+        return;
+      const txt = path.map(c => c.chr).join(''),
+        rev = [...txt].reverse().join('');
+      const word = WORDS.find(w => w === txt || w === rev);
+      if (!word || found.has(word))
+        return;
+      found.add(word);
+      path.forEach(c => {
+        c.el.classList.replace('drag', 'found');
+      });
+      document.getElementById('w-' + word).classList.add('found');
+      if (found.size === WORDS.length)
+        bootstrap.Modal.getOrCreateInstance('#winModal').show();
+      clearHighlight(); // Clear highlight after finding word
+    }
+
+    // --------- NEW: Highlight random unfound word for 3 seconds blinking ---------
+    let lastHighlightCells = [];
+    let highlightTimeout;
+    let isHighlighting = false;
+
+    function clearHighlight() {
+      if (highlightTimeout) {
+        clearTimeout(highlightTimeout);
+        highlightTimeout = null;
+      }
+      lastHighlightCells.forEach(cell => {
+        cell.classList.remove('highlight');
+      });
+      lastHighlightCells = [];
+      isHighlighting = false;
+    }
+
+    function highlightRandomUnfoundWord() {
+      if (isHighlighting) return; // Prevent multiple hints at once
+
+      clearHighlight();
+
+      const unfoundWords = WORDS.filter(w => !found.has(w));
+      if (unfoundWords.length === 0) return; // all found
+
+      const word = unfoundWords[rand(unfoundWords.length)];
+
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          for (const [dr, dc] of DIRS) {
+            let match = true;
+            for (let i = 0; i < word.length; i++) {
+              const rr = r + dr * i,
+                cc = c + dc * i;
+              if (rr < 0 || rr >= SIZE || cc < 0 || cc >= SIZE) {
+                match = false;
+                break;
+              }
+              if (grid[rr][cc] !== word[i]) {
+                match = false;
+                break;
+              }
+            }
+            if (match) {
+              lastHighlightCells = [];
+              for (let i = 0; i < word.length; i++) {
+                const rr = r + dr * i,
+                  cc = c + dc * i;
+                const cell = document.querySelector(`.cell[data-r="${rr}"][data-c="${cc}"]`);
+                if (cell && !cell.classList.contains('found')) {
+                  cell.classList.add('highlight');
+                  lastHighlightCells.push(cell);
+                }
+              }
+              isHighlighting = true;
+              highlightTimeout = setTimeout(() => {
+                clearHighlight();
+              }, 3000); // Remove highlight after 3 seconds
+              return;
+            }
+          }
+        }
+      }
+    }
+
+    document.getElementById('helpButton').addEventListener('click', highlightRandomUnfoundWord);
+  </script>
+</body>
+
+</html>
