@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Word Search – Responsive & Touch‑friendly</title>
+
+  <link href="../bootstrap-5.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css" rel="stylesheet" /> -->
+
+
+
+  <style>
+    :root {
+      --cell-size: clamp(30px, 7.5vw, 50px);
+      --cell-gap: clamp(3px, 1vw, 6px);
+      --font-size: clamp(.8rem, 2.4vw, 1rem);
+      --grid-cols: 10;
+      /* ← default; will be overridden by JS */
+    }
+
+    body {
+      background: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(var(--grid-cols), var(--cell-size));
+      gap: var(--cell-gap);
+      justify-content: center;
+      margin-top: 1.5rem;
+      touch-action: none;
+    }
+
+    .cell {
+      width: var(--cell-size);
+      aspect-ratio: 1/1;
+      border: 2px solid #6c757d;
+      border-radius: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: var(--font-size);
+      background: #fff;
+      user-select: none;
+      cursor: pointer;
+      transition: background-color .3s ease
+    }
+
+    .cell.drag {
+      background: #0d6efd;
+      color: #fff
+    }
+
+    .cell.found {
+      background: #198754;
+      color: #fff !important
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        background: #e6f9d6;
+      }
+
+      50% {
+        background: #cfeeb1;
+      }
+    }
+
+    .cell.highlight {
+      animation: blink 1s infinite;
+      color: #000 !important
+    }
+
+    .word.badge {
+      font-size: clamp(.75rem, 2.3vw, .95rem)
+    }
+
+    .word.found {
+      text-decoration: line-through !important;
+      color: #00ff5866 !important
+    }
+
+    h2 {
+      font-size: clamp(1.3rem, 6vw, 1.75rem)
+    }
+
+    /* Help button */
+    #helpButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: #198754;
+      color: #fff;
+      font-weight: bold;
+      font-size: 28px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, .2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      z-index: 1000;
+      transition: background-color .3s ease
+    }
+
+    #helpButton:hover {
+      background: #145c32
+    }
+
+    /* Back button */
+    .back-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #333;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
+      z-index: 1000
+    }
+
+    .back-btn:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
+      transform: translateY(-2px)
+    }
+  </style>
+</head>
+
+<body>
+  <a id="backBtn" href="../WordSearch/ws_levels.html" class="back-btn" aria-label="Go back">&#8592;</a>
+  <br />
+  <div class="container text-center py-4">
+    <h2 class="mb-3">🧩 Word Search <br /> Find me please 💖</h2>
+    <div id="grid" class="grid"></div>
+    <br /><br />
+    <div class="word-list mt-4">
+      <h5>Words to Find:</h5>
+      <div id="wordList" class="d-flex justify-content-center flex-wrap gap-2 mt-2"></div>
+    </div>
+  </div>
+
+  <button id="helpButton" title="Highlight a random unfound word">?</button>
+
+  <!-- Win Modal -->
+  <div class="modal fade" id="winModal" tabindex="-1" aria-labelledby="winModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="winModalLabel">Congratulations!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          You found the missing piece of my heart. 💕 <br />Here is my gift for you:
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#letterModal"
+            data-bs-dismiss="modal">Open Letter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Letter Modal -->
+  <div class="modal fade" id="letterModal" tabindex="-1" aria-labelledby="letterModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="letterModalLabel">A Little Note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center" id="modalBody"></div>
+        <div class="modal-footer">
+          <button id="closeModalRefresh" type="button" class="btn btn-secondary" data-bs-dismiss="modal">NEXT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Congrats modal -->
+  <div class="modal fade" id="allFoundModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="allFoundLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center">
+        <div class="modal-header border-0">
+          <h5 class="modal-title w-100" id="allFoundLabel">
+            🎉 Congratulations! 🎉
+          </h5>
+        </div>
+
+        <div class="modal-body">
+          You found every single word.<br>
+          Ready for another round?
+        </div>
+
+        <div class="modal-footer justify-content-center border-0">
+          <button type="button" class="btn btn-primary" onclick="location.reload()">
+            Play again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="../bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.min.js"></script> -->
+
+  <script>
+    // Go Back Button
+    document.getElementById('backBtn').addEventListener('click', function (e) {
+      e.preventDefault();
+      localStorage.clear();
+      sessionStorage.clear();
+      window.location.href = this.href;
+    });
+
+    // Constants
+    const SIZE = Number(localStorage.getItem('ws_levelSize') || 7);  //Value is 10, 8 and 7
+    const WORDS_PER_ROUND = Number(localStorage.getItem('ws_levelWord') || 5); //value is 7,6 and 5
+
+    document.documentElement.style.setProperty('--grid-cols', SIZE);
+
+
+    const DIRS = [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0], [-1, -1], [1, -1]];
+    const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    // Selectors
+    const gEl = document.getElementById('grid');
+    const wEl = document.getElementById('wordList');
+    const helpButton = document.getElementById('helpButton');
+    const modalBody = document.getElementById('modalBody');
+    const closeModalRefresh = document.getElementById('closeModalRefresh');
+
+    const usedWords = JSON.parse(localStorage.getItem('ws_usedWords') || '[]');
+    // Word Pool Logic
+    const WORD_POOL = [
+      'JUMRYL', 'JEAN', 'MIHRA', 'SOLIVIO', 'LAO',
+      'LOVE', 'INFINITY', 'FOREVER', 'SMILE', 'SUNSHINE',
+      'HUG', 'CARE', 'PEACE', 'TRUST', 'DREAM',
+      'HOPE', 'FAITH', 'CUDDLE', 'PROMISE', 'KISS',
+      'LOYAL', 'STRENGTH', 'FUTURE', 'TOGETHER', 'MEMORIES',
+      'JOURNEY', 'HAPPY', 'GIGGLE', 'WARMTH', 'HOLD',
+      'SERENITY', 'SOULMATE', 'HEART', 'PASSION', 'HONESTY',
+      'KINDNESS', 'SUPPORT', 'RESPECT', 'CHERISH', 'OURS',
+      'DESTINY', 'UNITE', 'BOND', 'BREATHE', 'TRUE',
+      'FAITHFUL', 'AFFECTION', 'PATIENCE', 'JOY', 'WONDER',
+      'ENERGY', 'BLOSSOM', 'SPARKLE', 'MIRACLE', 'COURAGE',
+      'EMBRACE', 'ADVENTURE', 'INTIMACY', 'SYNERGY', 'UNITY',
+      'PARTNER', 'DARLING', 'TREASURE', 'RADIANCE', 'LIGHT',
+      'BRIGHT', 'STARLIGHT', 'FLOWER', 'BLOOM', 'PETAL',
+      'ROSE', 'LILY', 'ORCHID', 'CANDLE', 'FIRE',
+      'WISH', 'MAGIC', 'ETERNITY', 'GALAXY', 'PLAYFUL',
+      'COMFORT', 'BLISS', 'CARESS', 'MUSE', 'DEVOTION',
+      'GENTLE', 'NURTURE', 'PROTECT', 'GUIDE', 'GLOW',
+      'SHINE', 'RAINBOW', 'SPARK', 'KISSES', 'HARMONY',
+      'CHARM', 'DREAMER', 'LULLABY', 'MELODY', 'RHYTHM',
+      'TENDER', 'WHISPER', 'CANDY', 'SWEET', 'CRUSH',
+      'CUDDLES', 'SNUGGLE',
+      'ADORE', 'BELOVED', 'BLOSSOM', 'BONDING', 'BUBBLES',
+      'CHERISH', 'COMRADE', 'CUPID', 'DARLIN', 'DEAREST',
+      'ENCHANT', 'FLUTTER', 'FRIEND', 'GLIMMER', 'GLORY',
+      'HONEY', 'INFATUATE', 'JUBILEE', 'KINDLY', 'LONGING',
+      'LOVELY', 'MIRTH', 'MYSTIC', 'NOSTALGIA', 'PASSIONATE',
+      'PEARL', 'PLEASURE', 'PLEDGE', 'PRECIOUS', 'REJOICE',
+      'SINCERE', 'SOFTLY', 'SPARK', 'SPIRIT', 'SUNSET',
+      'TENDERLY', 'TREASURED', 'TRUELOVE', 'TWINKLE', 'UNITY',
+      'VALENTINE', 'VOW', 'WARM', 'WISHFUL', 'ZEST',
+
+      // New words with max 8 characters:
+      'BREEZE', 'CANDLE', 'CHEERS', 'DAZZLE', 'DELIGHT', 'ELEGANT',
+      'FELT', 'FESTIVE', 'FLORAL', 'GLANCE', 'GLOWING', 'HEAVEN',
+      'JUBILEE', 'KINDRED', 'LUXURY', 'MAGNET', 'MARVEL', 'MELLOW',
+      'NURTURE', 'PEBBLE', 'POLISH', 'PURPLE', 'RHYTHM', 'SINCERE',
+      'SOFTLY', 'SPARK', 'SPIRIT', 'STARRY', 'TENDER', 'TWINKLE',
+      'UNITY', 'VIBRANT', 'VIOLET', 'WARMTH', 'WHISPER', 'WONDER',
+      'ZESTFUL', 'AMORE', 'ARDENT', 'AURORA', 'BALMY', 'BLUSH', 'BREEZY',
+      'CUDDLY', 'CHARISMA', 'DELICATE', 'EUPHORY', 'FEELING', 'FLAUNT',
+      'GIDDY', 'HEARTEN', 'LULLING', 'LUSTROUS', 'OVERJOY', 'POLARIS',
+      'PUREST', 'RADIANT', 'RIPPLE', 'SERENE', 'SMITTEN', 'SOULFUL', 'TANGLED',
+      'TACTILE', 'TRULY', 'VELVET', 'WHOLLY', 'WORSHIP',
+
+      // New words with max 7 characters:
+      'ADMIRER', 'ADORING', 'AFFAIR', 'AMITY', 'ARDOUR', 'BEAUTY', 'BETROT',
+      'BRIDAL', 'CARING', 'CHERIE', 'CHERUB', 'COUPLE', 'DEARIE', 'DEARLY',
+      'DESIRE', 'DEVOTE', 'DEVOTED', 'DEVOTEE', 'ENAMOR', 'ESTEEM', 'FERVOR',
+      'FONDLY', 'FONDLE', 'FELICE', 'FELIZ', 'HUGGER', 'KISSED', 'LOVING',
+      'PURELY', 'ROMANCE', 'SPOUSE', 'SUITOR', 'VENERA', 'YEARN', 'ZEALOT',
+      'ZESTED', 'ADMIRE', 'AMOROUS', 'HEARTS', 'SOFTEN', 'TICKLE', 'TRUSTED',
+      'ANGEL', 'ANGELS', 'GRACE', 'HEARTY'
+    ];
+
+    const remaining = WORD_POOL.filter(
+      w => !usedWords.includes(w) && w.length === SIZE
+    );
+
+    function getNextWord() {
+      if (!remaining.length) {
+        bootstrap.Modal.getOrCreateInstance(
+          document.getElementById('winModal')
+        ).show();
+        return null;
+      }
+      const idx = Math.floor(Math.random() * remaining.length);
+      const word = remaining.splice(idx, 1)[0];
+      usedWords.push(word);
+      localStorage.setItem('ws_usedWords', JSON.stringify(usedWords));
+      return word;
+    }
+
+    const rand = n => Math.floor(Math.random() * n);
+    const WORDS = [];
+    while (WORDS.length < WORDS_PER_ROUND) {
+      const w = getNextWord();
+      if (!w) break;
+      WORDS.push(w);
+    }
+
+    if (WORDS.length === 0) {
+      // nothing to place at all
+      bootstrap.Modal.getOrCreateInstance(
+        document.getElementById('allFoundModal')
+      ).show();
+    }
+
+    // Grid Setup
+    const grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(''));
+    for (let i = 0; i < WORDS.length; i++) {
+      let word = WORDS[i];
+      let placed = false;
+      let tries = 0;
+      while (!placed && tries++ < 500) {
+        const [dr, dc] = DIRS[rand(DIRS.length)];
+        const r0 = rand(SIZE), c0 = rand(SIZE);
+        const rE = r0 + dr * (word.length - 1);
+        const cE = c0 + dc * (word.length - 1);
+        if (rE < 0 || rE >= SIZE || cE < 0 || cE >= SIZE) continue;
+        if ([...word].some((_, k) => {
+          const r = r0 + dr * k, c = c0 + dc * k;
+          return grid[r][c] && grid[r][c] !== word[k];
+        })) continue;
+
+        [...word].forEach((ch, k) => grid[r0 + dr * k][c0 + dc * k] = ch);
+        placed = true;
+      }
+
+      /* couldn’t place? – replace it */
+      if (!placed) {
+        const replacement = getNextWord();
+        if (replacement) {
+          WORDS[i--] = replacement;    // retry same index with new word
+        } else {
+          WORDS.splice(i, 1);          // nothing left; shrink the list
+        }
+      }
+    }
+
+    for (let r = 0; r < SIZE; r++)
+      for (let c = 0; c < SIZE; c++)
+        if (!grid[r][c]) grid[r][c] = ALPHA[rand(ALPHA.length)];
+
+    // Render Grid & Words
+    const cellMap = [];
+    function render() {
+      gEl.innerHTML = '';
+      wEl.innerHTML = '';
+      for (let r = 0; r < SIZE; r++) {
+        cellMap[r] = [];
+        for (let c = 0; c < SIZE; c++) {
+          const el = document.createElement('div');
+          el.className = 'cell';
+          el.textContent = grid[r][c];
+          el.dataset.r = r;
+          el.dataset.c = c;
+          gEl.appendChild(el);
+          cellMap[r][c] = el;
+        }
+      }
+      for (const w of WORDS) {
+        const span = document.createElement('span');
+        span.id = `w-${w}`;
+        span.className = 'word badge bg-secondary text-light p-2';
+        span.textContent = w;
+        wEl.appendChild(span);
+      }
+    }
+    render();
+
+    // Drag Handling
+    let start = null, path = [], found = new Set();
+    function cellFromEl(el) {
+      return { el, row: +el.dataset.r, col: +el.dataset.c, chr: el.textContent };
+    }
+    function buildPath(curr) {
+      const { row: r0, col: c0 } = start, { row: r1, col: c1 } = curr;
+      const dr = Math.sign(r1 - r0), dc = Math.sign(c1 - c0);
+      if (!dr && !dc) return;
+      if (dr && dc && Math.abs(r1 - r0) !== Math.abs(c1 - c0)) return;
+
+      path.forEach(c => c.el.classList.remove('drag'));
+      path = [];
+      for (let r = r0, c = c0; r !== r1 + dr || c !== c1 + dc; r += dr, c += dc) {
+        const el = cellMap[r]?.[c];
+        if (!el) return;
+        const cell = { el, row: r, col: c, chr: el.textContent };
+        el.classList.add('drag');
+        path.push(cell);
+      }
+    }
+    function clearDrag() {
+      path.forEach(c => c.el.classList.remove('drag'));
+      path = []; start = null;
+    }
+    function validate() {
+      if (path.length < 2) return;
+      const txt = path.map(c => c.chr).join(''), rev = [...txt].reverse().join('');
+      const word = WORDS.find(w => w === txt || w === rev);
+      if (!word || found.has(word)) return;
+      found.add(word);
+      path.forEach(c => c.el.classList.replace('drag', 'found'));
+      document.getElementById('w-' + word).classList.add('found');
+      clearHighlight();
+      if (found.size === WORDS.length) bootstrap.Modal.getOrCreateInstance('#winModal').show();
+    }
+
+    // Events
+    gEl.addEventListener('pointerdown', e => {
+      const cell = e.target.closest('.cell');
+      if (!cell) return;
+      start = cellFromEl(cell);
+      path = [start];
+      cell.classList.add('drag');
+      e.target.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    gEl.addEventListener('pointermove', e => {
+      if (!start) return;
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (!el?.classList.contains('cell')) return;
+      buildPath(cellFromEl(el));
+    });
+    window.addEventListener('pointerup', () => {
+      if (!start) return;
+      validate();
+      clearDrag();
+    });
+
+    // Hint Logic
+    let lastHighlight = [], highlightTimeout, isHighlighting = false;
+    function clearHighlight() {
+      if (highlightTimeout) clearTimeout(highlightTimeout);
+      lastHighlight.forEach(cell => cell.classList.remove('highlight'));
+      lastHighlight = [];
+      isHighlighting = false;
+    }
+    function highlightRandom() {
+      if (isHighlighting) return;
+      const unfound = WORDS.filter(w => !found.has(w));
+      if (!unfound.length) return;
+      const word = unfound[rand(unfound.length)];
+
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          for (const [dr, dc] of DIRS) {
+            let match = true;
+            for (let i = 0; i < word.length; i++) {
+              const rr = r + dr * i, cc = c + dc * i;
+              if (rr < 0 || rr >= SIZE || cc < 0 || cc >= SIZE || grid[rr][cc] !== word[i]) {
+                match = false; break;
+              }
+            }
+            if (match) {
+              lastHighlight = [];
+              for (let i = 0; i < word.length; i++) {
+                const rr = r + dr * i, cc = c + dc * i;
+                const cell = cellMap[rr][cc];
+                if (cell && !cell.classList.contains('found')) {
+                  cell.classList.add('highlight');
+                  lastHighlight.push(cell);
+                }
+              }
+              isHighlighting = true;
+              highlightTimeout = setTimeout(clearHighlight, 2000);
+              return;
+            }
+          }
+        }
+      }
+    }
+    helpButton.addEventListener('click', highlightRandom);
+
+    // Love Notes
+    const notes = ['Every moment with you turns ordinary life into an extraordinary adventure.',
+      'Your smile brightens even the darkest days.',
+      'With you, every day feels like a beautiful surprise.',
+      'You are my favorite reason to believe in magic.',
+      'Just knowing you’re near makes everything better.',
+      'Your kindness inspires me to be a better person.',
+      'Loving you is the easiest thing I’ve ever done.',
+      'Together, we can conquer anything life throws at us.',
+      'You make my heart feel at home.',
+      'Your laughter is my favorite sound in the world.',
+      'I’m grateful for every moment we share.',
+      'You’re the calm in my chaos.',
+      'Every day with you is a page in our beautiful story.',
+      'Your love gives me strength I never knew I had.',
+      'You are the spark that lights up my soul.',
+      'Being with you feels like the perfect dream.',
+      'You make the ordinary moments extraordinary.',
+      'I see my future in your eyes.',
+      'Loving you is my greatest adventure.',
+      'When you hold my hand, the world feels steady.',
+      'Your voice is my favorite song.',
+      'Home is wherever I’m with you.',
+      'Every sunrise reminds me of your warm embrace.',
+      'I fall for you a little more each day.',
+      'You turn my doubts into hope.',
+      'Your love paints my sky in brighter colors.',
+      'With you, even silence feels like music.',
+      'Our story is my favorite chapter in life.',
+      'Your presence turns moments into memories.',
+      'My heart found its rhythm in your heartbeat.',
+      'You make ordinary days taste like magic.',
+      'Every glance from you feels like a gentle hug.',
+      'You are the answer to every whispered wish.',
+      'Time stands still when you’re near.',
+      'You turn my “someday” dreams into todays.',
+      'Even the stars envy your sparkle.',
+      'Your love is my safe harbor in any storm.',
+      'Life is better whenever you’re in the picture.',
+      'You’re the reason I believe in forever.',
+      'Your smile starts a parade of butterflies inside me.',
+      'Every path feels right when we walk it together.',
+      'Your love is the best plot twist of my life.',
+      'With you, the little things mean everything.',
+      'You’re the melody my heart was searching for.',
+      'You light up corners of my soul I never knew were dark.',
+      'I’d choose you in every lifetime.',
+      'Your laughter is the soundtrack of my happiest days.',
+      'You make messy days beautifully worthwhile.',
+      'Our love story keeps getting better with every page.',
+      'You’re the calm breeze in my whirlwind thoughts.',
+      'Every dream leads me straight back to you.',
+      'Your love wraps around me like the softest blanket.',
+      'Together, we turn hurdles into stepping stones.',
+      'You make my heart race and rest all at once.',
+      'Your eyes hold the map to my forever.',
+      'I never run out of reasons to smile because of you.',
+      'Your love feels like the perfect plot of fate.',
+      'Life’s sweetest moments are the ones spent with you.'
+    ];
+    document.getElementById('letterModal').addEventListener('show.bs.modal', () => {
+      modalBody.textContent = notes[rand(notes.length)];
+    });
+    closeModalRefresh.addEventListener('click', () => location.reload());
+
+  </script>
+</body>
+
+</html>

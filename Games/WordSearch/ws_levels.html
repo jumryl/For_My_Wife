@@ -10,9 +10,9 @@
     <title>For Jean Exclusively</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="../assets2/css/main.css" />
+    <link rel="stylesheet" href="../../assets2/css/main.css" />
     <noscript>
-        <link rel="stylesheet" href="../assets/css/noscript.css" />
+        <link rel="stylesheet" href="../../assets/css/noscript.css" />
     </noscript>
 
     <style>
@@ -46,48 +46,40 @@
 <body class="is-preload">
 
     <!-- Back Button -->
-    <a href="../index.html" class="back-btn" aria-label="Go back">&#8592;</a>
-
-    <!-- Header -->
-    <header id="header">
-        <div class="inner">
-            <a class="image avatar"><img src="../images/GameLogo.png" alt="" /></a>
-            <h1>My <strong>Games</strong> For you</h1>
-        </div>
-    </header>
+    <a href="../../Games/gamesMenu.html" class="back-btn" aria-label="Go back">&#8592;</a>
 
     <!-- Main -->
     <div id="main">
-
         <!-- One -->
-        <section id="one">
-            <p>I made something special for you, a game. 🧩 It’s more than just a project… it’s a piece of my heart.
-                I took time, stepped out of my usual space, and let inspiration take over,
-                and that inspiration was you. Every idea, every line of code, every detail… all made with you in mind.
-                <br><br>
-                I wanted to create something fun, something thoughtful, something that says “I love you” in a way only I
-                could, by building it with my own hands. You’re the reason behind every little piece of it.
-                <br><br>
-                Hope it brings a smile to your face the way you always bring joy to mine. 💖
-            </p>
-        </section>
-
-        <!-- Two -->
         <section id="two">
-            <h2>Games</h2>
+            <h2>LEVELS</h2>
             <div class="row">
                 <article class="col-6 col-12-xsmall work-item">
-                    <a class="image fit"><img src="../images/wordsearch.png" alt="" /></a>
-                    <h3>WORD SEARCH</h3>
+                    <a class="image fit"><img src="../../images/easyLevel.png" alt="" /></a>
                     <ul class="actions">
-                        <li><a href="./WordSearch/word_search.html" class="button">PLAY GAME</a></li>
+                        <li>
+                            <a href="./word_search.html" class="button play-btn" data-level-size="7" data-level-word="5"
+                                data-level-name="EASY">PLAY</a>
+
+                        </li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
-                    <a class="image fit"><img src="../images/commingsoon.jpg" alt="" /></a>
-                    <h3>July 30, 2025</h3>
+                    <a class="image fit"><img src="../../images/mediumLevel.png" alt="" /></a>
                     <ul class="actions">
-                        <li><a class="button">Comming Soon...</a></li>
+                        <li>
+                            <a href="./word_search.html" class="button play-btn" data-level-size="8" data-level-word="6"
+                                data-level-name="MEDIUM">PLAY</a>
+                        </li>
+                    </ul>
+                </article>
+                <article class="col-6 col-12-xsmall work-item">
+                    <a class="image fit"><img src="../../images/hardLevel.png" alt="" /></a>
+                    <ul class="actions">
+                        <li>
+                            <a href="./word_search.html" class="button play-btn" data-level-size="10"
+                                data-level-word="7" data-level-name="HARD">PLAY</a>
+                        </li>
                     </ul>
                 </article>
             </div>
@@ -113,12 +105,27 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="../assets2/js/jquery.min.js"></script>
-    <script src="../assets2/js/jquery.poptrox.min.js"></script>
-    <script src="../assets2/js/browser.min.js"></script>
-    <script src="../assets2/js/breakpoints.min.js"></script>
-    <script src="../assets2/js/util.js"></script>
-    <script src="../assets2/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    localStorage.setItem('ws_levelSize', btn.dataset.levelSize);
+                    localStorage.setItem('ws_levelWord', btn.dataset.levelWord);
+                    localStorage.setItem('ws_levelName', btn.dataset.levelName);
+                });
+            });
+        });
+
+    </script>
+
+
+
+    <script src="../../assets2/js/jquery.min.js"></script>
+    <script src="../../assets2/js/jquery.poptrox.min.js"></script>
+    <script src="../../assets2/js/browser.min.js"></script>
+    <script src="../../assets2/js/breakpoints.min.js"></script>
+    <script src="../../assets2/js/util.js"></script>
+    <script src="../../assets2/js/main.js"></script>
 
 </body>
 
