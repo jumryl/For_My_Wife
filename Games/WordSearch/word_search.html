@@ -309,8 +309,8 @@
       'ANGEL', 'ANGELS', 'GRACE', 'HEARTY'
     ];
 
-    const remaining = WORD_POOL.filter(
-      w => !usedWords.includes(w) && w.length === SIZE
+    let remaining = WORD_POOL.filter(
+      w => !usedWords.includes(w) && w.length <= SIZE
     );
 
     function getNextWord() {
@@ -335,12 +335,12 @@
       WORDS.push(w);
     }
 
-    if (WORDS.length === 0) {
-      // nothing to place at all
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('allFoundModal')
-      ).show();
-    }
+    // if (WORDS.length === 0) {
+    //   // nothing to place at all
+    //   bootstrap.Modal.getOrCreateInstance(
+    //     document.getElementById('allFoundModal')
+    //   ).show();
+    // }
 
     // Grid Setup
     const grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(''));
@@ -472,7 +472,12 @@
       lastHighlight = [];
       isHighlighting = false;
     }
+
+
+
     function highlightRandom() {
+
+
       if (isHighlighting) return;
       const unfound = WORDS.filter(w => !found.has(w));
       if (!unfound.length) return;
