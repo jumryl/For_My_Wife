@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>For Jean Exclusively</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets2/css/randomIns.css" />
+    <noscript>
+        <link rel="stylesheet" href="../assets/css/noscript.css" />
+    </noscript>
+</head>
+
+<body class="is-preload">
+    <div id="wrapper">
+        <header id="header">
+            <a href="../index.html" class="logo">Moments</a>
+        </header>
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="../index.html">◄ Go back to Main Page</a></li>
+                <li><a href="./whereItBegins.html">When it Begins</a></li>
+                <li><a href="./myLetters.html">My Letters</a></li>
+                <li><a href="../Games/gamesMenu.html">Games</a></li>
+                <li><a href="./summaryOfUs.html">Summary of US</a></li>
+                <li><a href="./randomInspiration.html">Random Inspiration</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://www.facebook.com/muj.85256" class="icon brands fa-facebook-f"><span
+                            class="label">Facebook</span></a></li>
+                <li><a href="https://www.instagram.com/jumryl?igsh=MXh1NTZsZjc0bGh1OQ=="
+                        class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                <li><a href="https://github.com/jumryl" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <div id="main">
+            <section class="post">
+                <header class="major">
+                    <span class="date">Random Inspirations</span>
+                </header>
+                <div class="image main">
+
+                    <div class="hearts"></div>
+
+                    <div class="container">
+                        <div class="card">
+                            <h1 class="title">Random Inspiration</h1>
+                            <p class="subtitle">Transform negativity into love's positive energy</p>
+
+                            <div class="message-area">
+                                <div class="placeholder" id="placeholder">Click below to receive your inspiration ✨
+                                </div>
+                                <div class="message" id="message"></div>
+                            </div>
+
+                            <button class="inspire-btn" onclick="showInspiration()">
+                                Inspire Me
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="copyright">
+            <ul>
+                <li>&copy; Jumryl@2025</li>
+                <li>Created By: <a href="https://www.facebook.com/muj.85256">Jumryl Solivio</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/jquery.scrollex.min.js"></script>
+    <script src="../assets/js/jquery.scrolly.min.js"></script>
+    <script src="../assets/js/browser.min.js"></script>
+    <script src="../assets/js/breakpoints.min.js"></script>
+    <script src="../assets/js/util.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <script>
+        const inspirationalMessages = [
+            "If you ever feel like giving up, remember the beautiful moments they've given you. Don't let pride destroy what love has built.",
+
+            "When distance feels overwhelming, remember that every mile between you is a testament to how strong your love truly is.",
+
+            "If arguments cloud your vision, look deeper into their eyes and remember why you chose each other in the first place.",
+
+            "When they seem different, remember that growth is beautiful, and loving someone means loving all their seasons of change.",
+
+            "If you feel unappreciated, recall the small gestures they make daily - love speaks in whispers, not just grand declarations.",
+
+            "When jealousy whispers lies, remember that they chose you among all others, and that choice speaks louder than any doubt.",
+
+            "If communication breaks down, remember that silence can be healed with patience, understanding, and the courage to be vulnerable first.",
+
+            "When you feel taken for granted, remember that comfort in love is a gift - they feel safe enough with you to be completely themselves.",
+
+            "If past hurts resurface, remember that forgiveness isn't forgetting - it's choosing love over the pain, again and again.",
+
+            "When you question if it's worth it, remember that every relationship is a garden - it flourishes with consistent care and attention.",
+
+            "If you feel disconnected, remember that even the sun and moon love each other from a distance, taking turns to light up each other's world.",
+
+            "When they seem unreachable, remember that sometimes the heart needs space to remember how much it misses what it loves.",
+
+            "If you're afraid of losing them, remember that real love isn't about possession - it's about growing together while staying whole as individuals.",
+
+            "When words fail you both, remember that love speaks in touches, glances, and the comfortable silence of two hearts beating in sync.",
+
+            "If you feel like you're not enough, remember that they fell in love with your authentic self - you don't need to be perfect, just real."
+        ];
+
+        let hasShownMessage = false;
+
+        function showInspiration() {
+            const placeholder = document.getElementById('placeholder');
+            const messageElement = document.getElementById('message');
+
+            // Hide placeholder
+            placeholder.style.display = 'none';
+
+            // Get random message
+            const randomIndex = Math.floor(Math.random() * inspirationalMessages.length);
+            const randomMessage = inspirationalMessages[randomIndex];
+
+            // Show message with animation
+            messageElement.textContent = randomMessage;
+            messageElement.classList.add('show');
+
+            // Create floating hearts effect
+            createHearts();
+
+            hasShownMessage = true;
+        }
+
+        function createHearts() {
+            const heartsContainer = document.querySelector('.hearts');
+
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+
+                heartsContainer.appendChild(heart);
+
+                // Remove heart after animation
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                }, 7000);
+            }
+        }
+
+        // Add some initial floating hearts for ambiance
+        function addAmbientHearts() {
+            const heartsContainer = document.querySelector('.hearts');
+
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '💕';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                heart.style.fontSize = Math.random() * 15 + 15 + 'px';
+
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // Initialize ambient hearts
+        addAmbientHearts();
+
+        // Refresh ambient hearts periodically
+        setInterval(addAmbientHearts, 10000);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Inspiration - Love</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 2rem;
+            animation: float 8s infinite linear;
+            user-select: none;
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .title {
+            color: white;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .message-container {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .message {
+            color: white;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            border-left: 4px solid #ff6b6b;
+            font-style: italic;
+        }
+
+        .message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .empty-state {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            font-style: italic;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .empty-state.hide {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .inspiration-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(238, 90, 82, 0.3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inspiration-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .inspiration-btn:hover::before {
+            left: 100%;
+        }
+
+        .inspiration-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(238, 90, 82, 0.4);
+            background: linear-gradient(45deg, #ff5252, #d84315);
+        }
+
+        .inspiration-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(238, 90, 82, 0.3);
+        }
+
+        .heart-icon {
+            margin-right: 8px;
+            animation: heartbeat 2s infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            20%,
+            40%,
+            60%,
+            80%,
+            100% {
+                transform: scale(1);
+            }
+
+            10%,
+            30% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2.5rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .title {
+                font-size: 2.2rem;
+            }
+
+            .message {
+                font-size: 1.1rem;
+                padding: 1.5rem;
+            }
+
+            .inspiration-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Sparkle animation */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation"></div>
+
+    <div class="container">
+        <h1 class="title">💕 Random Inspiration</h1>
+        <p class="subtitle">Transform your love challenges into strength</p>
+
+        <div class="message-container">
+            <div class="empty-state" id="emptyState">
+                Click below to receive your personalized love inspiration ✨
+            </div>
+            <div class="message" id="message"></div>
+        </div>
+
+        <button class="inspiration-btn" onclick="showInspiration()">
+            <span class="heart-icon">❤️</span>
+            Get Inspiration
+        </button>
+    </div>
+
+    <script>
+        const inspirations = [
+            "When you feel like giving up, remember all the beautiful moments they've shared with you. Don't let pride destroy what love has built.",
+
+            "If you're feeling unappreciated, remember that love isn't always loud - sometimes it whispers in small gestures and quiet presence.",
+
+            "When doubt creeps in, choose to see their efforts instead of their flaws. Love grows when we water it with gratitude, not criticism.",
+
+            "If you feel they're pulling away, don't chase with desperation. Instead, become the person they fell in love with again.",
+
+            "When anger clouds your heart, remember that you're on the same team. Fight the problem together, not each other.",
+
+            "If you feel unloved, look beyond words to actions. Love speaks many languages - learn to recognize theirs.",
+
+            "When you want to walk away, remember why you stayed this long. That reason might be stronger than this temporary storm.",
+
+            "If jealousy haunts you, transform it into appreciation. They chose you among millions - that's your daily miracle.",
+
+            "When communication breaks down, don't build walls with silence. Build bridges with 'I'm sorry' and 'Let's try again.'",
+
+            "If you feel taken for granted, don't withdraw your love - express your needs with kindness instead of resentment.",
+
+            "When they seem distant, don't assume the worst. Sometimes people need space to miss you and remember your worth.",
+
+            "If you're tired of fighting, remember that every strong relationship has weathered storms. This too shall strengthen you.",
+
+            "When you feel they don't understand you, become more patient in explaining rather than more frustrated in expecting.",
+
+            "If you're questioning their love, look at how they worry about you, think of you, and choose you every day in small ways.",
+
+            "When everything feels routine, create magic in ordinary moments. Love isn't always fireworks - sometimes it's a warm candle.",
+
+            "If you feel like you're giving more, remember that love isn't a transaction. Give from overflow, not obligation.",
+
+            "When trust feels broken, remember that healing happens one honest conversation at a time. Don't give up on tomorrow.",
+
+            "If you feel invisible, speak up with love, not anger. The right person wants to see you - help them find the way.",
+
+            "When loneliness strikes even when you're together, create moments of true connection. Quality over quantity, always.",
+
+            "If you're afraid of losing them, focus on becoming someone worth keeping rather than someone who desperately clings."
+        ];
+
+        let currentMessage = '';
+        let usedMessages = new Set();
+
+        function showInspiration() {
+            const messageEl = document.getElementById('message');
+            const emptyStateEl = document.getElementById('emptyState');
+
+            // If all messages have been used, reset
+            if (usedMessages.size === inspirations.length) {
+                usedMessages.clear();
+            }
+
+            // Get a random unused message
+            let randomMessage;
+            do {
+                randomMessage = inspirations[Math.floor(Math.random() * inspirations.length)];
+            } while (usedMessages.has(randomMessage) && usedMessages.size < inspirations.length);
+
+            usedMessages.add(randomMessage);
+            currentMessage = randomMessage;
+
+            // Hide empty state
+            emptyStateEl.classList.add('hide');
+
+            // Show message with animation
+            setTimeout(() => {
+                messageEl.textContent = currentMessage;
+                messageEl.classList.add('show');
+                createSparkles();
+            }, 300);
+        }
+
+        function createSparkles() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 6; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(sparkle);
+
+                setTimeout(() => sparkle.remove(), 2000);
+            }
+        }
+
+        // Create floating hearts background animation
+        function createFloatingHearts() {
+            const bgAnimation = document.querySelector('.bg-animation');
+            const hearts = ['💕', '💖', '💗', '💝', '💘', '❤️', '💙', '💜'];
+
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
+
+                bgAnimation.appendChild(heart);
+
+                setTimeout(() => heart.remove(), 10000);
+            }, 3000);
+        }
+
+        // Initialize background animation
+        createFloatingHearts();
+    </script>
+</body>
+
+</html>
