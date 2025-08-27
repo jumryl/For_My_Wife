@@ -82,49 +82,49 @@
                     <a class="image fit"><img src="../images/monthsary1.png" alt="" /></a>
                     <h3>January 30, 2025</h3>
                     <ul class="actions">
-                        <li><a href="./letters/letterJan30.html" class="button">Read Letter</a></li>
+                        <li><a href="./letters/letterJan30.html" class="button protected-letter">Read Letter</a></li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
                     <a class="image fit"><img src="../images/monthsary2.png" alt="" /></a>
                     <h3>Febuary 28, 2025</h3>
                     <ul class="actions">
-                        <li><a href="./letters/letterFeb28.html" class="button">Read Letter</a></li>
+                        <li><a href="./letters/letterFeb28.html" class="button protected-letter">Read Letter</a></li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
                     <a class="image fit"><img src="../images/monthsary3.png" alt="" /></a>
                     <h3>March 30, 2025</h3>
                     <ul class="actions">
-                        <li><a href="./letters/letterMar30.html" class="button">Read Letter</a></li>
+                        <li><a href="./letters/letterMar30.html" class="button protected-letter">Read Letter</a></li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
                     <a class="image fit"><img src="../images/monthsary4.png" alt="" /></a>
                     <h3>April 30, 2025</h3>
                     <ul class="actions">
-                        <li><a href="./letters/letterApr30.html" class="button">Read Letter</a></li>
+                        <li><a href="./letters/letterApr30.html" class="button protected-letter">Read Letter</a></li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
                     <a class="image fit"><img src="../images/monthsary5.png" alt="" /></a>
                     <h3>May 30, 2025</h3>
                     <ul class="actions">
-                        <li><a href="./letters/letterMay30.html" class="button">Read Letter</a></li>
+                        <li><a href="./letters/letterMay30.html" class="button protected-letter">Read Letter</a></li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
                     <a class="image fit"><img src="../images/monthsary6.png" alt="" /></a>
                     <h3>June 30, 2025</h3>
                     <ul class="actions">
-                        <li><a href="./letters/letterJun30.html" class="button">Read Letter</a></li>
+                        <li><a href="./letters/letterJun30.html" class="button protected-letter">Read Letter</a></li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
                     <a class="image fit"><img src="../images/monthsary7.png" alt="" /></a>
                     <h3>July 30, 2025</h3>
                     <ul class="actions">
-                        <li><a href="./letters/letterJul30.html" class="button">Read Letter</a></li>
+                        <li><a href="./letters/letterJul30.html" class="button protected-letter">Read Letter</a></li>
                     </ul>
                 </article>
                 <article class="col-6 col-12-xsmall work-item">
@@ -163,6 +163,194 @@
     <script src="../assets2/js/breakpoints.min.js"></script>
     <script src="../assets2/js/util.js"></script>
     <script src="../assets2/js/main.js"></script>
+
+    <!-- Password Modal -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-title">🔒 Secure Access</h2>
+            <p class="modal-subtitle">Please enter the password to read this letter</p>
+            <input type="password" id="letterPassword" placeholder="Enter password">
+            <button id="submitPassword">Unlock</button>
+            <p id="errorMessage">❌ Wrong password. Try again.</p>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+
+        /* Modal Content */
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8f8f8);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            animation: scaleIn 0.3s ease;
+            position: relative;
+        }
+
+        /* Title + Subtitle */
+        .modal-title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .modal-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Close Button */
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        /* Input */
+        .modal-content input {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        .modal-content input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 8px rgba(108, 99, 255, 0.4);
+        }
+
+        /* Button */
+        .modal-content button {
+            width: 100%;
+            padding: 12px;
+            background: #6c63ff;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .modal-content button:hover {
+            background: #5848d6;
+            transform: translateY(-2px);
+        }
+
+        .modal-content button:active {
+            transform: translateY(0);
+        }
+
+        /* Error Message */
+        #errorMessage {
+            display: none;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #e74c3c;
+        }
+
+        /* Animation */
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 1.5rem;
+                max-width: 90%;
+            }
+
+            .modal-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+
+    <script>
+        const globalPasswordHash = "f1230a5e813c02ffee1d915c391c0e7e1fbe4dc8426a6503697f6a35b08efa57";
+        let targetHref = null;
+
+        // Only target buttons with "protected-letter"
+        document.querySelectorAll(".protected-letter").forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                targetHref = this.getAttribute("href");
+                document.getElementById("passwordModal").style.display = "flex";
+                document.getElementById("letterPassword").focus();
+            });
+        });
+
+        // Close modal
+        document.querySelector(".close").onclick = () => {
+            document.getElementById("passwordModal").style.display = "none";
+            document.getElementById("letterPassword").value = "";
+            document.getElementById("errorMessage").style.display = "none";
+        };
+
+        // Unlock with Enter key
+        document.getElementById("letterPassword").addEventListener("keypress", e => {
+            if (e.key === "Enter") document.getElementById("submitPassword").click();
+        });
+
+        // Password check
+        document.getElementById("submitPassword").onclick = async () => {
+            const input = document.getElementById("letterPassword").value;
+            const hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            if (globalPasswordHash === hashHex) {
+                document.getElementById("passwordModal").style.display = "none";
+                window.location.href = targetHref;
+            } else {
+                document.getElementById("errorMessage").style.display = "block";
+            }
+        };
+    </script>
+
+
+
+
 
 </body>
 
